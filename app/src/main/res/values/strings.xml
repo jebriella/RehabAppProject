@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Rehapp</string>
-    <string name="menuItem1">Todays Progress</string>
+    <string name="app_name">Rehapp testtext</string>
+    <string name="menuItem1">Today's Progress</string>
     <string name="menuItem2">Your Program</string>
     <string name="menuItem3">Your longterm progress</string>
     <string name="menuItem4">Live view your movement</string>
