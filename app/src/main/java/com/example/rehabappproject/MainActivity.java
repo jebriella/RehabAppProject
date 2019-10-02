@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -25,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     BluetoothAdapter mBluetoothAdapter;
+
+    private Button btnONOFF;
+    private TextView btStatus;
 
     // Create a BroadcastReceiver for ACTION_FOUND
     private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
@@ -56,15 +63,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver1);
+      //  unregisterReceiver(mBroadcastReceiver1);
+        //^^ The above code generates "receiver not registered"
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -75,12 +83,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btStatus = (TextView) findViewById(R.id.btStatus);
         TextView number = (TextView) findViewById(R.id.numberHolder);
-
         number.setText("70");
 
-        Button btnONOFF = (Button) findViewById(R.id.blueTbutton);
+        btnONOFF = (Button) findViewById(R.id.blueTbutton);
         mBluetoothAdapter  = BluetoothAdapter.getDefaultAdapter();
+        updateBTstatus();
 
 
         btnONOFF.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +102,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void updateBTstatus(){
+        if(mBluetoothAdapter == null){
+            Log.d(TAG, "enableDisableBT: Does not have BT capabilities.");
+            btStatus.setText("Bluetooth is not available");
+        }
+        if(!mBluetoothAdapter.isEnabled()){
+            btnONOFF.setText("Turn on bluetooth");
+            btStatus.setText("Bluetooth is off");
+        }
+        if(mBluetoothAdapter.isEnabled()){
+            btnONOFF.setText("Turn off bluetooth");
+            btStatus.setText("Bluetooth is on");
+        }
+    }
+
+
     public void enableDisableBT(){
         if(mBluetoothAdapter == null){
             Log.d(TAG, "enableDisableBT: Does not have BT capabilities.");
@@ -101,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "enableDisableBT: enabling BT.");
             Intent enableBTIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivity(enableBTIntent);
+            btnONOFF.setText("Turn off bluetooth");
+            btStatus.setText("Bluetooth is on");
+
 
             IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
             registerReceiver(mBroadcastReceiver1, BTIntent);
@@ -108,11 +136,24 @@ public class MainActivity extends AppCompatActivity {
         if(mBluetoothAdapter.isEnabled()){
             Log.d(TAG, "enableDisableBT: disabling BT.");
             mBluetoothAdapter.disable();
-
+            btnONOFF.setText("Turn on bluetooth");
+            btStatus.setText("Bluetooth is off");
             IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
             registerReceiver(mBroadcastReceiver1, BTIntent);
-        }
 
+        }
+    }
+
+    public void logOutButtonClicked(View V) {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // user is now signed out
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        finish();
+                    }
+                });
     }
 
 
