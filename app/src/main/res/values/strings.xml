@@ -5,4 +5,7 @@
     <string name="menuItem3">Your longterm progress</string>
     <string name="menuItem4">Live view your movement</string>
     <string name="bluetoothBtn">Turn on bluetooth</string>
+    <string name="bluetoothStatus">Bluetooth status</string>
+    <string name="logout">LOG OUT</string>
+    <string name="discover">Discover</string>
 </resources>
