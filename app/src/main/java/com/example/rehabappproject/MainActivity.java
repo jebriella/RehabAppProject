@@ -28,6 +28,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 
@@ -167,6 +169,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 });
     }
 
+    public void printNumber(String numb){
+        number = (TextView) findViewById(R.id.numberHolder);
+        number.setText("70");
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -246,8 +253,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //create the bond.
         //NOTE: Requires API 17+? I think this is JellyBean
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
-            Log.d(TAG, "Trying to pair with " + deviceName);
-            mBTDevices.get(i).createBond();
+            try {
+                Log.d(TAG, "Trying to pair with " + deviceName);
+                byte[] pin = (byte[]) BluetoothDevice.class.getMethod("convertPinToBytes", String.class).invoke(BluetoothDevice.class, "1234");
+                Method m = mBTDevices.get(i).getClass().getMethod("setPin", byte[].class);
+                m.invoke(mBTDevices.get(i), pin);
+                mBTDevices.get(i).getClass().getMethod("setPairingConfirmation", boolean.class).invoke(mBTDevices.get(i), true);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
+            //mBTDevices.get(i).createBond();
         }
     }
 
