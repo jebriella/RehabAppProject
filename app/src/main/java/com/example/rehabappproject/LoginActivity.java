@@ -26,21 +26,26 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
 
 //Specifies the login methods to be used
-    private FirebaseAuth mAuth;    List<AuthUI.IdpConfig> providers = Arrays.asList(
-            new AuthUI.IdpConfig.EmailBuilder().build(),
-            new AuthUI.IdpConfig.GoogleBuilder().build());
+    private FirebaseAuth mAuth;
+
 
 
 @Override
 protected void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_login);
+
+    List<AuthUI.IdpConfig> providers = Arrays.asList(
+            new AuthUI.IdpConfig.EmailBuilder().build(),
+            new AuthUI.IdpConfig.GoogleBuilder().build());
 
     // Create and launch sign-in intent
     startActivityForResult(
             AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(providers)
+                    .setTheme(R.style.LoginTheme)
+                    .setLogo(R.mipmap.logo)
                     .build(),
             RC_SIGN_IN);
 
