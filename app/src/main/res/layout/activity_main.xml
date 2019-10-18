@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--
+    This gives us a double toolbar. I think we should just go with the standard one
+    instead of creating our own. /Simon
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +23,8 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
+    -->
+
 
     <include layout="@layout/content_main" />
 

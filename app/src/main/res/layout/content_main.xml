@@ -78,6 +78,14 @@
         app:layout_constraintTop_toBottomOf="@+id/blueTbutton"
         app:layout_constraintVertical_bias="0.89" />
 
+    <Button
+        android:id="@+id/btnProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="btnProgress"
+        android:text="Progress"
+        />
+
     <ListView
         android:id="@+id/lvNewDevices"
         android:layout_width="288dp"

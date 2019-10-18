@@ -54,11 +54,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver1);
-        //unregisterReceiver(mBroadcastReceiver2);
-        unregisterReceiver(mBroadcastReceiver3);
-        unregisterReceiver(mBroadcastReceiver4);
-      //  unregisterReceiver(mBroadcastReceiver1);
+      unregisterReceiver(mBroadcastReceiver1);
+      //  unregisterReceiver(mBroadcastReceiver2);
+      unregisterReceiver(mBroadcastReceiver3);
+      unregisterReceiver(mBroadcastReceiver4);
+      // unregisterReceiver(mBroadcastReceiver1);
         //^^ The above code generates "receiver not registered"
     }
 
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
                         // user is now signed out
-                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                         finish();
                     }
                 });
@@ -388,5 +388,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }else{
             Log.d(TAG, "checkBTPermissions: No need to check permissions. SDK version < LOLLIPOP.");
         }
+    }
+
+    public void btnProgress(View view){
+
+        setContentView(R.layout.activity_home);
+
+        //startActivity(new Intent(getApplicationContext(), ProgressActivity.class));
+        //finish();
+
     }
 }
