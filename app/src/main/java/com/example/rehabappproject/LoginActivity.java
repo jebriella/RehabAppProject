@@ -1,6 +1,7 @@
 package com.example.rehabappproject;
 
 import android.content.Intent;
+import android.net.wifi.hotspot2.pps.HomeSp;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,7 +64,7 @@ protected void onCreate(Bundle savedInstanceState){
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 finish();
 
                 // ...
