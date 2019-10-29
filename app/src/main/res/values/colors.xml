@@ -6,5 +6,6 @@
     <color name="colorPrimaryDark">#005C85</color>
     <color name="colorPrimaryLight">#EDE7F6</color>
     <color name="colorAccent">#FFC107</color>
-    <color name="colorSecondary">#4CAF50</color>
+    <color name="colorSecondary">#00FF00</color>
+    <color name="colorSTrans">#6600FF00</color>
 </resources>
