@@ -1,5 +1,6 @@
 package com.example.rehabappproject;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     Button weekButton;
     Button monthButton;
     Button yearButton;
+    
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +68,11 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    public void homeClicked(View view){
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
+    }
+
     public void monthClick(View view){
         plotMonthBarChart(entries, dateNameList, goal);
     }
@@ -82,12 +89,9 @@ public class HomeActivity extends AppCompatActivity {
     }
     private void plotWeekBarChart (ArrayList entries, ArrayList labels, float goal){
 
-
         BarChart barChart = plotBarChart(entries, dayNameList, goal, week);
 
-
         plotIndicatorLine(goal, barChart);
-
 
     }
 
