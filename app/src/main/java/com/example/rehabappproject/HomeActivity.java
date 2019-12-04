@@ -73,6 +73,11 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
+    public void btClicked(View view){
+        startActivity(new Intent(getApplicationContext(), DeviceControlActivity.class));
+        finish();
+    }
+
     public void monthClick(View view){
         plotMonthBarChart(entries, dateNameList, goal);
     }

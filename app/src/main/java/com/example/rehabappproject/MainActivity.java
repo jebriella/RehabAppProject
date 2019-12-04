@@ -54,18 +54,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
+
       unregisterReceiver(mBroadcastReceiver1);
       //  unregisterReceiver(mBroadcastReceiver2);
       unregisterReceiver(mBroadcastReceiver3);
       unregisterReceiver(mBroadcastReceiver4);
       // unregisterReceiver(mBroadcastReceiver1);
         //^^ The above code generates "receiver not registered"
+
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
@@ -112,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //        btnDiscover(view);
         //    }
         //});
+
+
 
     }
 
@@ -213,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             number.setText("90");
         }
         if(!mBluetoothAdapter.isDiscovering()){
+            Log.d(TAG, "btnDiscover: Is not discovering already, starting");
 
             //check BT permissions in manifest
             checkBTPermissions();
@@ -220,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             mBluetoothAdapter.startDiscovery();
             IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
             registerReceiver(mBroadcastReceiver3, discoverDevicesIntent);
-            number.setText("80");
+           // number.setText("80");
         }
     }
 
