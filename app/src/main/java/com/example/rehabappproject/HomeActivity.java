@@ -75,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void btClicked(View view){
         startActivity(new Intent(getApplicationContext(), DeviceControlActivity.class));
-        finish();
+        //finish();
     }
 
     public void monthClick(View view){

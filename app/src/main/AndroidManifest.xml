@@ -31,8 +31,8 @@
             android:name=".MainActivity"/>
         <activity
             android:name=".ProgressActivity"/>
-        <activity android:name=".DeviceControlActivity"/>
-        <service android:name=".BluetoothLeService" android:enabled="true"/>
+        <activity android:name=".DeviceControlActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
 
         <!--
         <activity
