@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void btClicked(View view){
-        startActivity(new Intent(getApplicationContext(), DeviceControlActivity.class));
+        startActivity(new Intent(getApplicationContext(), DeviceScanActivity.class));
         //finish();
     }
 
