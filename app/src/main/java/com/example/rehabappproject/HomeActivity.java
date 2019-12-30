@@ -87,9 +87,9 @@ public class HomeActivity extends AppCompatActivity {
         //Populate bar chart
         plotWeekBarChart(barEntries, dayNameList, goal);
 
-        weekButton = (Button) findViewById(R.id.weekButton);
-        monthButton = (Button) findViewById(R.id.monthButton);
-        yearButton = (Button) findViewById(R.id.yearButton);
+        weekButton = findViewById(R.id.weekButton);
+        monthButton = findViewById(R.id.monthButton);
+        yearButton = findViewById(R.id.yearButton);
 
         // read angle data from file to arraylist varible
             myCSVReader txtReader = new myCSVReader("angle_example_data.csv" ,context );
@@ -115,11 +115,11 @@ public class HomeActivity extends AppCompatActivity {
         for (int i=0; i<angleData.size(); i++){
             Entry e = new Entry( angleDataTimeStamp.get(i), angleData.get(i).floatValue() ); // multiplied with - to invert plotted curve
             scatterEntries.add(e);
-            if (angleData.get(i).intValue()<40){
+            if (angleData.get(i)<40){
                 colorList.add(getResources().getColor(R.color.colorAccent));
-            } else if (angleData.get(i).intValue() < 60 ) {
+            } else if (angleData.get(i) < 60 ) {
                 colorList.add(getResources().getColor(R.color.colorSTrans));
-            } else if (angleData.get(i).intValue() > 60 ) {
+            } else if (angleData.get(i) > 60 ) {
                 colorList.add(getResources().getColor(R.color.colorDarkBlue));
             }
         }
@@ -196,7 +196,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private BarChart plotBarChart(ArrayList entries, ArrayList labels, float goal, float noDays) {
 
-        BarChart barChart = (BarChart) findViewById(R.id.barchart);
+        BarChart barChart = findViewById(R.id.barchart);
         barChart.clear();
 
         BarDataSet bardataset = new BarDataSet(entries, "Example Label");
@@ -250,24 +250,27 @@ public class HomeActivity extends AppCompatActivity {
 
     private ScatterChart plotScatterChart(ArrayList<Entry> entries, String labels, float timeSpan, ArrayList<Integer> colorList) {
 
-        ScatterChart scatterChart = (ScatterChart) findViewById(R.id.scatterplot);
+        ScatterChart scatterChart = findViewById(R.id.scatterplot);
         scatterChart.clear();
 
+        /*
         entries.clear();
         colorList.clear();
 
-        for (int i=0; i<10; i++){
+        for (int i=0; i<30; i++){
             Entry e = new Entry(i, i); // multiplied with - to invert plotted curve
             entries.add(e);
-            if (i<1){
+            if (i<10){
                 colorList.add(getResources().getColor(R.color.colorSTrans));
-            }else if (i<3) {
+            }else if (i<20) {
                 colorList.add(getResources().getColor(R.color.colorDarkBlue));
             } else {
                 colorList.add(getResources().getColor(R.color.fui_bgGitHub));
             }
         }
 
+
+         */
         ScatterDataSet scatterDataSet = new ScatterDataSet(entries, "Label");
         scatterDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         scatterDataSet.setColors(colorList);

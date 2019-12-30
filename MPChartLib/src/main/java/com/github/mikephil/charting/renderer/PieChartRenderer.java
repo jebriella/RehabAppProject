@@ -116,7 +116,6 @@ public class PieChartRenderer extends DataRenderer {
 
     @Override
     public void initBuffers() {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -792,7 +791,6 @@ public class PieChartRenderer extends DataRenderer {
 
         /* Skip entirely if using rounded circle slices, because it doesn't make sense to highlight
          * in this way.
-         * TODO: add support for changing slice color with highlighting rather than only shifting the slice
          */
 
         final boolean drawInnerArc = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled();

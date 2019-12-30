@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,7 +114,7 @@ public class FileUtils {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
-                    new InputStreamReader(am.open(path), "UTF-8"));
+                    new InputStreamReader(am.open(path), StandardCharsets.UTF_8));
 
             String line = reader.readLine();
 
@@ -234,7 +235,7 @@ public class FileUtils {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
-                    new InputStreamReader(am.open(path), "UTF-8"));
+                    new InputStreamReader(am.open(path), StandardCharsets.UTF_8));
 
             String line = reader.readLine();
 
