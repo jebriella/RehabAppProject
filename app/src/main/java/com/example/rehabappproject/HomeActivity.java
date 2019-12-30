@@ -38,21 +38,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-    float week = 7f;
-    float month = 31f;
-    float goal;
+    private final float week = 7f;
+    private final float month = 31f;
+    private float goal;
 
-    ArrayList<BarEntry> barEntries;
-    ArrayList<String> dayNameList;
-    ArrayList<String> dateNameList;
+    private ArrayList<BarEntry> barEntries;
+    private ArrayList<String> dayNameList;
+    private ArrayList<String> dateNameList;
 
-    ArrayList<Entry> scatterEntries;
+    private ArrayList<Entry> scatterEntries;
 
-    Button weekButton;
-    Button monthButton;
-    Button yearButton;
+    private Button weekButton;
+    private Button monthButton;
+    private Button yearButton;
 
-    private Context context = GlobalApplication.getAppContext();
+    private final Context context = GlobalApplication.getAppContext();
     
 
     @Override
@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Generate example data for the bar chart
         barEntries = new ArrayList<>();
-        dayNameList = new ArrayList<String>();
+        dayNameList = new ArrayList<>();
         dateNameList = new ArrayList<>();
         int dayNr =1; int dateNr =1;
         for (int i =0 ; i<60; i++){
@@ -82,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
             dayNr++; dateNr++;
         }
 
-        goal = 20f; // indicator line height
+        goal = 40f; // indicator line height
 
         //Populate bar chart
         plotWeekBarChart(barEntries, dayNameList, goal);
@@ -91,14 +91,13 @@ public class HomeActivity extends AppCompatActivity {
         monthButton = findViewById(R.id.monthButton);
         yearButton = findViewById(R.id.yearButton);
 
-        // read angle data from file to arraylist varible
+        // read angle data from file to array list variable
             myCSVReader txtReader = new myCSVReader("angle_example_data.csv" ,context );
             ArrayList<Double> angleData = txtReader.readTxt();
 
             //generate 50hz timestamp AL to go with the above
         ArrayList<Float> angleDataTimeStamp = new ArrayList<>();
-        Float t =0.0f;
-        Math.floorMod(angleData.size(), 50);
+        float t =0.0f;
         for (int i=0; i<angleData.size()/50+1 ;i++) {
             for (int j=0; j<50; j++) {
                 if ((i < (angleData.size() / 50)) || (j < Math.floorMod(angleData.size(), 50))) {
@@ -113,18 +112,19 @@ public class HomeActivity extends AppCompatActivity {
         scatterEntries = new ArrayList<>();
         ArrayList<Integer> colorList = new ArrayList<>();
         for (int i=0; i<angleData.size(); i++){
-            Entry e = new Entry( angleDataTimeStamp.get(i), angleData.get(i).floatValue() ); // multiplied with - to invert plotted curve
+            Entry e = new Entry( angleDataTimeStamp.get(i), -angleData.get(i).floatValue() ); // multiplied with - to invert plotted curve
             scatterEntries.add(e);
-            if (angleData.get(i)<40){
+            double ad = angleData.get(i);
+            if (ad > 5 && ad <45 ){ //between 15 and 40
                 colorList.add(getResources().getColor(R.color.colorAccent));
-            } else if (angleData.get(i) < 60 ) {
+            } else if (ad < 5 || ad < 60 ) { // under 15 or between 40 and 60
                 colorList.add(getResources().getColor(R.color.colorSTrans));
-            } else if (angleData.get(i) > 60 ) {
-                colorList.add(getResources().getColor(R.color.colorDarkBlue));
+            } else if (ad > 60 ) {  //over 60
+                colorList.add(getResources().getColor(R.color.colorClearRed));
             }
         }
         float timeSpan = angleData.size();
-        plotScatterChart(scatterEntries, "Angle", timeSpan, colorList);
+        plotScatterChart(scatterEntries, timeSpan, colorList);
 
     }
 
@@ -176,7 +176,7 @@ public class HomeActivity extends AppCompatActivity {
         plotYearBarChart(barEntries, dayNameList, goal);
     }
     private void plotYearBarChart (ArrayList entries, ArrayList labels, float goal){
-
+    //TODO Plot year
     }
 
     private void plotIndicatorLine (float goal, BarChart barChart) {
@@ -194,7 +194,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private BarChart plotBarChart(ArrayList entries, ArrayList labels, float goal, float noDays) {
+    private BarChart plotBarChart(ArrayList<BarEntry> entries, ArrayList labels, float goal, float noDays) {
 
         BarChart barChart = findViewById(R.id.barchart);
         barChart.clear();
@@ -225,13 +225,14 @@ public class HomeActivity extends AppCompatActivity {
         barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
 
 
-        //gridlines
+        //grid lines
         barChart.getAxisRight().setDrawGridLines(false);
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.getXAxis().setDrawGridLines(false);
 
         // legend
         barChart.getLegend().setEnabled(false);
+        barChart.getDescription().setEnabled(false);
 
         // viewport
         barChart.resetViewPortOffsets();
@@ -248,29 +249,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    private ScatterChart plotScatterChart(ArrayList<Entry> entries, String labels, float timeSpan, ArrayList<Integer> colorList) {
+    private ScatterChart plotScatterChart(ArrayList<Entry> entries, float timeSpan, ArrayList<Integer> colorList) {
 
         ScatterChart scatterChart = findViewById(R.id.scatterplot);
         scatterChart.clear();
 
-        /*
-        entries.clear();
-        colorList.clear();
-
-        for (int i=0; i<30; i++){
-            Entry e = new Entry(i, i); // multiplied with - to invert plotted curve
-            entries.add(e);
-            if (i<10){
-                colorList.add(getResources().getColor(R.color.colorSTrans));
-            }else if (i<20) {
-                colorList.add(getResources().getColor(R.color.colorDarkBlue));
-            } else {
-                colorList.add(getResources().getColor(R.color.fui_bgGitHub));
-            }
-        }
-
-
-         */
         ScatterDataSet scatterDataSet = new ScatterDataSet(entries, "Label");
         scatterDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         scatterDataSet.setColors(colorList);
@@ -283,28 +266,27 @@ public class HomeActivity extends AppCompatActivity {
 
         // STYLING
 
-        //bars
-        //scatterChart.setColor(getResources().getColor(R.color.colorSTrans));
-
         //borders
-        //barChart.setDrawBorders(false);
-
-        //Values
-        //bardataset.setDrawValues(false);
+        scatterChart.setDrawBorders(false);
 
         //axises
-        //barChart.getAxisRight().setDrawAxisLine(false);
-        //barChart.getXAxis().setDrawAxisLine(false);
-        //  barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);  //move x dayNameList below
-        //barChart.getAxisRight().setDrawLabels(false);
+        scatterChart.getAxisRight().setDrawAxisLine(false);
+        scatterChart.getXAxis().setDrawAxisLine(false);
+        scatterChart.getAxisRight().setDrawLabels(false);
 
-        //gridlines
-        //barChart.getAxisRight().setDrawGridLines(false);
-        //barChart.getAxisLeft().setDrawGridLines(false);
-        //barChart.getXAxis().setDrawGridLines(false);
+        //grid lines
+        scatterChart.getAxisRight().setDrawGridLines(true);
+        scatterChart.getAxisLeft().setDrawGridLines(true);
+        scatterChart.getXAxis().setDrawGridLines(true);
 
         // legend
-        //barChart.getLegend().setEnabled(false);
+        scatterChart.getLegend().setEnabled(false);
+
+        // label
+        scatterChart.getDescription().setEnabled(false);
+
+        //zoom
+        scatterChart.setPinchZoom(false);
 
         // viewport
         //barChart.resetViewPortOffsets();
@@ -319,16 +301,12 @@ public class HomeActivity extends AppCompatActivity {
         return scatterChart;
 
     }
-
-
-
-
 }
 
 class myCSVReader {
 
-    Context context;
-    String url;
+    private Context context;
+    private String url;
 
     myCSVReader(String url, Context context) {
         this.url = url;
@@ -343,11 +321,12 @@ class myCSVReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        assert is != null;
         BufferedReader reader = new BufferedReader(is);
         return readDataRowByRow(reader);
     }
 
-        public ArrayList<Double> readDataRowByRow(BufferedReader reader) {
+        private ArrayList<Double> readDataRowByRow(BufferedReader reader) {
             ArrayList<Double> angleData = new ArrayList<>();
             try {
                 CSVReader csvReader = new CSVReader(reader);

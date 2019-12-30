@@ -8,4 +8,5 @@
     <color name="colorAccent">#FFC107</color>
     <color name="colorSecondary">#00FF00</color>
     <color name="colorSTrans">#6600FF00</color>
+    <color name="colorClearRed">#ff00</color>
 </resources>
