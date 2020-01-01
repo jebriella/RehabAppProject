@@ -41,5 +41,8 @@ dependencies {
     implementation 'com.opencsv:opencsv:4.0'
     implementation project(path: ':MPChartLib')
 
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
 
 }

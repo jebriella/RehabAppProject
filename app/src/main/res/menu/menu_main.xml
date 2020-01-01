@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.rehabappproject.MainActivity">
     <item
+        android:id="@+id/settings" android:icon="@drawable/ic_settings" app:showAsAction="always"   android:title="add"/>
+    <item
         android:id="@+id/menuItem1"
         android:orderInCategory="100"
         android:title="@string/menuItem1"
@@ -24,4 +26,5 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
 </menu>

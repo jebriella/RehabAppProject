@@ -55,14 +55,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
 
-      unregisterReceiver(mBroadcastReceiver1);
-      //  unregisterReceiver(mBroadcastReceiver2);
-      unregisterReceiver(mBroadcastReceiver3);
-      unregisterReceiver(mBroadcastReceiver4);
-      // unregisterReceiver(mBroadcastReceiver1);
-        //^^ The above code generates "receiver not registered"
+        try {
+            unregisterReceiver(mBroadcastReceiver1);
+            unregisterReceiver(mBroadcastReceiver2);
+            unregisterReceiver(mBroadcastReceiver3);
+            unregisterReceiver(mBroadcastReceiver4);
+        } catch (IllegalArgumentException e ){
+                e.printStackTrace();
+        }
+        //^^ The above code generates "receiver not registered" //TODO Once this view has been created it cannot be destroyed
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class)); //TODO This is a cheat since the activity cannot be destroyed, makes it impossible to close app if this activity has been started
     }
 
     @Override

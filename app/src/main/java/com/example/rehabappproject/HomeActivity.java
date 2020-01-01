@@ -2,16 +2,24 @@ package com.example.rehabappproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
-import com.firebase.ui.auth.AuthUI;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -24,11 +32,14 @@ import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.io.BufferedReader;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.opencsv.CSVReader;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -46,43 +57,62 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<String> dayNameList;
     private ArrayList<String> dateNameList;
 
-    private ArrayList<Entry> scatterEntries;
 
     private Button weekButton;
     private Button monthButton;
     private Button yearButton;
 
+    private ImageView userImage;
+    private TextView userWelcomeText;
+
+
     private final Context context = GlobalApplication.getAppContext();
-    
+    private long timeOfLastBackPressed = 0;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        //action bar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.squarelogo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        testBar();
+
+        StatusBarHandler statusBarHandler = new StatusBarHandler((ImageView) findViewById(R.id.userImg),
+                (TextView) findViewById(R.id.welcomeText), true); //TODO It would be good if this could be stored somehow and used w/o creating a new one on every activity
+    }
+
+    private void testBar() {
         DateFormatSymbols dfs = new DateFormatSymbols();
 
         // Generate example data for the bar chart
         barEntries = new ArrayList<>();
         dayNameList = new ArrayList<>();
         dateNameList = new ArrayList<>();
-        int dayNr =1; int dateNr =1;
-        for (int i =0 ; i<60; i++){
-            if (dayNr>7){
-                dayNr=1;
+        int dayNr = 1;
+        int dateNr = 1;
+        for (int i = 0; i < 30; i++) { //one month of sample data
+            if (dayNr > 7) {
+                dayNr = 1;
             }
-            if (dateNr>31){
-                dateNr=1;
+            if (dateNr > 31) {
+                dateNr = 1;
             }
-            float value = (int) (Math.random() * 100);
-            barEntries.add(new BarEntry(i, value ));
+            float value = (int) (Math.random() * 200);
+            barEntries.add(new BarEntry(i, value));
             dayNameList.add(dfs.getShortWeekdays()[dayNr]);
 
             dateNameList.add(dateNr + " Oktober");
-            dayNr++; dateNr++;
+            dayNr++;
+            dateNr++;
         }
 
-        goal = 40f; // indicator line height
+        goal = 100f; // indicator line height
 
         //Populate bar chart
         plotWeekBarChart(barEntries, dayNameList, goal);
@@ -90,81 +120,62 @@ public class HomeActivity extends AppCompatActivity {
         weekButton = findViewById(R.id.weekButton);
         monthButton = findViewById(R.id.monthButton);
         yearButton = findViewById(R.id.yearButton);
-
-        // read angle data from file to array list variable
-            myCSVReader txtReader = new myCSVReader("angle_example_data.csv" ,context );
-            ArrayList<Double> angleData = txtReader.readTxt();
-
-            //generate 50hz timestamp AL to go with the above
-        ArrayList<Float> angleDataTimeStamp = new ArrayList<>();
-        float t =0.0f;
-        for (int i=0; i<angleData.size()/50+1 ;i++) {
-            for (int j=0; j<50; j++) {
-                if ((i < (angleData.size() / 50)) || (j < Math.floorMod(angleData.size(), 50))) {
-                    angleDataTimeStamp.add(t+(1.0f/50)*j);
-                }
-            }
-            t++;
-        }
-
-
-        // Populate scatter plot of angle data
-        scatterEntries = new ArrayList<>();
-        ArrayList<Integer> colorList = new ArrayList<>();
-        for (int i=0; i<angleData.size(); i++){
-            Entry e = new Entry( angleDataTimeStamp.get(i), -angleData.get(i).floatValue() ); // multiplied with - to invert plotted curve
-            scatterEntries.add(e);
-            double ad = angleData.get(i);
-            if (ad > 5 && ad <45 ){ //between 15 and 40
-                colorList.add(getResources().getColor(R.color.colorAccent));
-            } else if (ad < 5 || ad < 60 ) { // under 15 or between 40 and 60
-                colorList.add(getResources().getColor(R.color.colorSTrans));
-            } else if (ad > 60 ) {  //over 60
-                colorList.add(getResources().getColor(R.color.colorClearRed));
-            }
-        }
-        float timeSpan = angleData.size();
-        plotScatterChart(scatterEntries, timeSpan, colorList);
-
     }
 
-    public void homeClicked(View view){
+    public void lastSessionClicked (View view){
+        startActivity(new Intent(getApplicationContext(), LastSessionActivity.class));
+    }
+
+    public void connectClicked(View view) {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
 
-    public void btClicked(View view){
-        startActivity(new Intent(getApplicationContext(), DeviceScanActivity.class));
-        //finish();
+    @Override
+    public void onBackPressed() {
+        long time = System.currentTimeMillis();
+        if (time - timeOfLastBackPressed > 2000) {    // if less than 2 seconds, exit
+            timeOfLastBackPressed = time;
+            Toast.makeText(this, "Press back again to exit",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    public void logOutButtonClicked(View V) {
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // user is now signed out
-                        // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                        finish();
-                    }
-                });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
-    public void monthClick(View view){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings:
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                return (true);
+        }
+        return (super.onOptionsItemSelected(item));
+    }
+
+    public void monthClick(View view) {
         plotMonthBarChart(barEntries, dateNameList, goal);
     }
-    private void plotMonthBarChart (ArrayList entries, ArrayList dayNameList, float goal){
+
+    private void plotMonthBarChart(ArrayList entries, ArrayList dayNameList, float goal) {
 
         BarChart barChart = plotBarChart(entries, dateNameList, goal, month);
 
-       plotIndicatorLine(goal, barChart);
+        plotIndicatorLine(goal, barChart);
 
     }
 
-    public void weekClick(View view){
+    public void weekClick(View view) {
         plotWeekBarChart(barEntries, dayNameList, goal);
     }
-    private void plotWeekBarChart (ArrayList entries, ArrayList labels, float goal){
+
+    private void plotWeekBarChart(ArrayList entries, ArrayList labels, float goal) {
 
         BarChart barChart = plotBarChart(entries, dayNameList, goal, week);
 
@@ -172,16 +183,17 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void yearClick(View view){
+    public void yearClick(View view) {
         plotYearBarChart(barEntries, dayNameList, goal);
     }
-    private void plotYearBarChart (ArrayList entries, ArrayList labels, float goal){
-    //TODO Plot year
+
+    private void plotYearBarChart(ArrayList entries, ArrayList labels, float goal) {
+        //TODO Plot year
     }
 
-    private void plotIndicatorLine (float goal, BarChart barChart) {
-        String goalString = Float.toString(goal) ;
-        String star = Character.toString( (char) 9733 );
+    private void plotIndicatorLine(float goal, BarChart barChart) {
+        String goalString = Float.toString(goal);
+        String star = Character.toString((char) 9733);
         String indicatorString = star.concat(" ").concat(goalString).concat(" ").concat(star).concat("   ");
 
         LimitLine iLine = new LimitLine((int) goal, indicatorString);
@@ -238,67 +250,13 @@ public class HomeActivity extends AppCompatActivity {
         barChart.resetViewPortOffsets();
         barChart.resetTracking();
         barChart.restoreDefaultFocus();
-        barChart.setVisibleXRange(noDays,noDays);
+        barChart.setVisibleXRange(noDays, noDays);
         barChart.moveViewToX(60); //move focus to the right
         barChart.invalidate();
 
         barChart.animateY(1000);
 
         return barChart;
-
-    }
-
-
-    private ScatterChart plotScatterChart(ArrayList<Entry> entries, float timeSpan, ArrayList<Integer> colorList) {
-
-        ScatterChart scatterChart = findViewById(R.id.scatterplot);
-        scatterChart.clear();
-
-        ScatterDataSet scatterDataSet = new ScatterDataSet(entries, "Label");
-        scatterDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-        scatterDataSet.setColors(colorList);
-
-        List<IScatterDataSet> dataSets = new ArrayList<>();
-        dataSets.add(scatterDataSet);
-
-        ScatterData data = new ScatterData(dataSets);
-        scatterChart.setData(data); // set the data and list of dayNameList into chart
-
-        // STYLING
-
-        //borders
-        scatterChart.setDrawBorders(false);
-
-        //axises
-        scatterChart.getAxisRight().setDrawAxisLine(false);
-        scatterChart.getXAxis().setDrawAxisLine(false);
-        scatterChart.getAxisRight().setDrawLabels(false);
-
-        //grid lines
-        scatterChart.getAxisRight().setDrawGridLines(true);
-        scatterChart.getAxisLeft().setDrawGridLines(true);
-        scatterChart.getXAxis().setDrawGridLines(true);
-
-        // legend
-        scatterChart.getLegend().setEnabled(false);
-
-        // label
-        scatterChart.getDescription().setEnabled(false);
-
-        //zoom
-        scatterChart.setPinchZoom(false);
-
-        // viewport
-        //barChart.resetViewPortOffsets();
-        //barChart.resetTracking();
-        //barChart.restoreDefaultFocus();
-        //barChart.setVisibleXRange(noDays,noDays);
-        //barChart.moveViewToX(60); //move focus to the right
-        scatterChart.invalidate();
-
-        scatterChart.animateY(1000);
-
-        return scatterChart;
 
     }
 }

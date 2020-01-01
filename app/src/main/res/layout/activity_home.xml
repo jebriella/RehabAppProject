@@ -12,17 +12,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <include
+                layout="@layout/statusbar"
+                android:id="@+id/statusIncluded" />
 
 <!-- Circular chart -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <TextView
                 android:id="@+id/progText1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Today's progress"
+                android:text="Today"
                 android:textSize="@dimen/big_text"
                 android:layout_centerHorizontal="true"
                 >
@@ -82,17 +86,59 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/black" />
+                android:background="@android:color/darker_gray" />
 
-<!-- Scatter plot -->
-            <com.github.mikephil.charting.charts.ScatterChart
-                android:id="@+id/scatterplot"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="300sp"
-                android:paddingBottom="150dp">
-            </com.github.mikephil.charting.charts.ScatterChart>
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                >
 
-<!-- Bar chart -->
+                <Button
+                    android:id="@+id/trackBtn"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="75dp"
+                    android:background="@drawable/circle"
+                    android:text="Track
+                    exercise"
+                    android:onClick="trackExerciseClicked"/>
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="75dp"
+                    android:background="@drawable/circle"
+                    android:text="Last
+                    session"
+                    android:onClick="lastSessionClicked"/>
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_marginTop="5sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/fui_min_height_target"
+                    android:layout_below="@id/trackBtn"
+                    android:layout_centerHorizontal="true"
+                    android:text="Connect sensors"
+                    android:onClick="connectClicked"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginTop="10sp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                />
+            <!-- Bar chart -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,81 +146,46 @@
                 android:textSize="@dimen/big_text"
                 android:paddingTop="@dimen/fui_body_padding_bottom"
                 android:gravity="center"
-                >
-            </TextView>
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barchart"
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:paddingBottom="150dp"
-            />
+                android:paddingBottom="10dp"
+                />
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barchart"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:paddingBottom="50dp"
+                />
             <LinearLayout
-                    android:layout_width="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal">
+                <Button style="@style/Widget.AppCompat.Button.Colored"
+                    android:id="@+id/weekButton"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:weightSum="3"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/weekButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Week"
-                        android:onClick="weekClick">
-                    </Button>
-                    <Button
-                        android:id="@+id/monthButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Month"
-                        android:onClick="monthClick">
-                    </Button>
-                    <Button
-                        android:id="@+id/yearButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Year"
-                        android:onClick="yearClick">
-                    </Button>
-                </LinearLayout>
+                    android:layout_weight="1"
+                    android:text="Week"
+                    android:onClick="weekClick"/>
+                <Button style="@style/Widget.AppCompat.Button.Colored"
+                    android:id="@+id/monthButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Month"
+                    android:onClick="monthClick"/>
+                <Button style="@style/Widget.AppCompat.Button.Colored"
+                    android:id="@+id/yearButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Year"
+                    android:onClick="yearClick"/>
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/black" />
 
-<!-- Misc buttons -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Main screen"
-                android:onClick="homeClicked">
-
-            </Button>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BT screen"
-                android:onClick="btClicked">
-
-            </Button>
-
-                <Button
-                    android:id="@+id/logOutbtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp"
-                    android:onClick="logOutButtonClicked"
-                    android:text="@string/logout" />
-
-            </LinearLayout>
 
         </LinearLayout>
 
