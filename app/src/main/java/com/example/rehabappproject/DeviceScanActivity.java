@@ -235,4 +235,9 @@ public class DeviceScanActivity extends ListActivity {
             //Log.d(TAG, "checkBTPermissions: No need to check permissions. SDK version < LOLLIPOP.");
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

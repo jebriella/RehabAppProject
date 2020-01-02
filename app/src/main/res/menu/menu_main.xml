@@ -4,27 +4,5 @@
     tools:context="com.example.rehabappproject.HomeActivity">
     <item
         android:id="@+id/settings" android:icon="@drawable/ic_settings" app:showAsAction="always"   android:title="add"/>
-    <item
-        android:id="@+id/menuItem1"
-        android:orderInCategory="100"
-        android:title="@string/menuItem1"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menuItem2"
-        android:orderInCategory="101"
-        android:title="@string/menuItem2" />
-    <item
-        android:id="@+id/menuItem3"
-        android:orderInCategory="102"
-        android:title="@string/menuItem3" />
-    <item
-        android:id="@+id/menuItem4"
-        android:orderInCategory="103"
-        android:title="@string/menuItem4" />
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
 
 </menu>

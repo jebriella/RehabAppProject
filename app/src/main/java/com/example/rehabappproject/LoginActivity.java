@@ -56,10 +56,10 @@ protected void onCreate(Bundle savedInstanceState){
                     .build(),
             RC_SIGN_IN);
 
+
+
     //not connected to internet
-    ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-    if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() != NetworkInfo.State.CONNECTED ||
-            connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+    if (!isNetworkAvailable()) {
         Toast toast= Toast.makeText(getApplicationContext(), "Connect to the internet to login", Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP,0,50);
         toast.show();
@@ -67,6 +67,12 @@ protected void onCreate(Bundle savedInstanceState){
 
     mAuth = FirebaseAuth.getInstance();
 }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
