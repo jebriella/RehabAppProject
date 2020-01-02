@@ -15,6 +15,8 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
 /**
@@ -22,6 +24,9 @@ import java.util.UUID;
  * given Bluetooth LE device.
  */
 public class BluetoothLeService extends Service {
+    byte[] txBuffer = new byte[4096];
+    byte[] rawTxData = new byte[4096];
+
     private final static String TAG = BluetoothLeService.class.getSimpleName();
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
@@ -107,11 +112,14 @@ public class BluetoothLeService extends Service {
                 Log.d(TAG, "Heart rate format UINT8.");
             }
             final int heartRate = characteristic.getIntValue(format, 1);
+            //Log.d("Test",s);
             Log.d(TAG, String.format("Received heart rate: %d", heartRate));
             intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
         } else {
             // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();
+            //String s = convertRxbytesToString(data.length, data);
+            //Log.d("test",s);
             if (data != null && data.length > 0) {
                 final StringBuilder stringBuilder = new StringBuilder(data.length);
                 for(byte byteChar : data)
@@ -269,4 +277,6 @@ public class BluetoothLeService extends Service {
         if (mBluetoothGatt == null) return null;
         return mBluetoothGatt.getServices();
     }
+
+
 }

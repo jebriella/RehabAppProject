@@ -24,6 +24,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,8 @@ public class DeviceControlActivity extends AppCompatActivity {
     private BluetoothGattCharacteristic mNotifyCharacteristic;
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
+    private ArrayList<String> outputs;
+    public static ArrayList<String> values;
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -149,6 +152,7 @@ public class DeviceControlActivity extends AppCompatActivity {
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
         //checkBTPermissions();
+        outputs = new ArrayList<String>();
     }
     @Override
     protected void onResume() {
@@ -197,6 +201,9 @@ public class DeviceControlActivity extends AppCompatActivity {
             case R.id.menu_disconnect:
                 mBluetoothLeService.disconnect();
                 return true;
+            case R.id.menu_refresh:
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                return true;
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -214,6 +221,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     private void displayData(String data) {
         if (data != null) {
             mDataField.setText(data);
+            //Log.d("Data", data);
         }
     }
     // Demonstrates how to iterate through the supported GATT Services/Characteristics.
@@ -228,6 +236,7 @@ public class DeviceControlActivity extends AppCompatActivity {
         ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData
                 = new ArrayList<ArrayList<HashMap<String, String>>>();
         mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+
         // Loops through available GATT Services.
         for (BluetoothGattService gattService : gattServices) {
             HashMap<String, String> currentServiceData = new HashMap<String, String>();
@@ -247,11 +256,19 @@ public class DeviceControlActivity extends AppCompatActivity {
                 charas.add(gattCharacteristic);
                 HashMap<String, String> currentCharaData = new HashMap<String, String>();
                 uuid = gattCharacteristic.getUuid().toString();
+                    //outputs.add(uuid);
+                //Log.d("Value",uuid);
+                //String x = SampleGattAttributes.lookup(uuid, unknownCharaString); //TT
+                //Log.d("Value",x); // TT
                 currentCharaData.put(
                         LIST_NAME, SampleGattAttributes.lookup(uuid, unknownCharaString));
                 currentCharaData.put(LIST_UUID, uuid);
                 gattCharacteristicGroupData.add(currentCharaData);
+                Log.d("Value",currentCharaData.toString());
+                //Log.d("Value",currentCharaData);
+                //Log.d("ID?",uuid);
             }
+
             mGattCharacteristics.add(charas);
             gattCharacteristicData.add(gattCharacteristicGroupData);
         }
@@ -265,8 +282,10 @@ public class DeviceControlActivity extends AppCompatActivity {
                 android.R.layout.simple_expandable_list_item_2,
                 new String[] {LIST_NAME, LIST_UUID},
                 new int[] { android.R.id.text1, android.R.id.text2 }
+
         );
         mGattServicesList.setAdapter(gattServiceAdapter);
+        //values = (ArrayList<String>) outputs.clone();
     }
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
