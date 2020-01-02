@@ -158,14 +158,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="3"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+
                 <Button style="@style/Widget.AppCompat.Button.Colored"
                     android:id="@+id/weekButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Week"
-                    android:onClick="weekClick"/>
+                    android:onClick="weekClick"
+                    />
                 <Button style="@style/Widget.AppCompat.Button.Colored"
                     android:id="@+id/monthButton"
                     android:layout_width="0dp"
@@ -173,13 +177,6 @@
                     android:layout_weight="1"
                     android:text="Month"
                     android:onClick="monthClick"/>
-                <Button style="@style/Widget.AppCompat.Button.Colored"
-                    android:id="@+id/yearButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Year"
-                    android:onClick="yearClick"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
