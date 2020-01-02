@@ -37,7 +37,8 @@
             android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
         <service android:name=".BluetoothLeService" android:enabled="true"/>
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

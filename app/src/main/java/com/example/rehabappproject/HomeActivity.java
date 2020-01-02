@@ -125,6 +125,9 @@ public class HomeActivity extends AppCompatActivity {
     public void lastSessionClicked (View view){
         startActivity(new Intent(getApplicationContext(), LastSessionActivity.class));
     }
+    public void trackExerciseClicked (View view){
+
+    }
 
     public void connectClicked(View view) {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -154,6 +157,7 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.settings:
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                finish();
                 return (true);
         }
         return (super.onOptionsItemSelected(item));

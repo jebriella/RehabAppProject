@@ -1,8 +1,13 @@
 package com.example.rehabappproject;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.hotspot2.pps.HomeSp;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -51,6 +56,15 @@ protected void onCreate(Bundle savedInstanceState){
                     .build(),
             RC_SIGN_IN);
 
+    //not connected to internet
+    ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+    if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() != NetworkInfo.State.CONNECTED ||
+            connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+        Toast toast= Toast.makeText(getApplicationContext(), "Connect to the internet to login", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP,0,50);
+        toast.show();
+    }
+
     mAuth = FirebaseAuth.getInstance();
 }
 
@@ -73,6 +87,7 @@ protected void onCreate(Bundle savedInstanceState){
                 if (response == null) {
                     finish();
                 }
+
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
