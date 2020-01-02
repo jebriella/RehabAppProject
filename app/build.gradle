@@ -34,8 +34,15 @@ dependencies {
     // FirebaseUI for Firebase Auth
     implementation 'com.firebaseui:firebase-ui-auth:6.0.2'
 
-    // Bar chart
-    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+    // Charts
+    //Has been implemented as a module
+
+    //openCSV
+    implementation 'com.opencsv:opencsv:4.0'
+    implementation project(path: ':MPChartLib')
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
 
 }

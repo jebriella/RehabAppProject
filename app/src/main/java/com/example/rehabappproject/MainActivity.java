@@ -55,14 +55,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
 
-      unregisterReceiver(mBroadcastReceiver1);
-      //  unregisterReceiver(mBroadcastReceiver2);
-      unregisterReceiver(mBroadcastReceiver3);
-      unregisterReceiver(mBroadcastReceiver4);
-      // unregisterReceiver(mBroadcastReceiver1);
-        //^^ The above code generates "receiver not registered"
+        try {
+            unregisterReceiver(mBroadcastReceiver1);
+            unregisterReceiver(mBroadcastReceiver2);
+            unregisterReceiver(mBroadcastReceiver3);
+            unregisterReceiver(mBroadcastReceiver4);
+        } catch (IllegalArgumentException e ){
+                e.printStackTrace();
+        }
+        //^^ The above code generates "receiver not registered" //TODO Once this view has been created it cannot be destroyed
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class)); //TODO This is a cheat since the activity cannot be destroyed, makes it impossible to close app if this activity has been started
     }
 
     @Override
@@ -83,22 +89,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        btStatus = (TextView) findViewById(R.id.btStatus);
-        number = (TextView) findViewById(R.id.numberHolder);
+        btStatus = findViewById(R.id.btStatus);
+        number = findViewById(R.id.numberHolder);
         number.setText("70");
 
-        btnONOFF = (Button) findViewById(R.id.blueTbutton);
+        btnONOFF = findViewById(R.id.blueTbutton);
         mBluetoothAdapter  = BluetoothAdapter.getDefaultAdapter();
         updateBTstatus();
 
-        btnEnableDisable_Discoverable = (Button) findViewById(R.id.btnDiscoverable_on_off);
+        btnEnableDisable_Discoverable = findViewById(R.id.btnDiscoverable_on_off);
 
-        lvNewDevices = (ListView) findViewById(R.id.lvNewDevices);
+        lvNewDevices = findViewById(R.id.lvNewDevices);
         mBTDevices = new ArrayList<>();
 
         lvNewDevices.setOnItemClickListener(MainActivity.this);
 
-        btnDis = (Button) findViewById(R.id.btnFindUnpairedDevices);
+        btnDis = findViewById(R.id.btnFindUnpairedDevices);
 
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mBroadcastReceiver4, filter);
@@ -177,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void printNumber(String numb){
-        number = (TextView) findViewById(R.id.numberHolder);
+        number = findViewById(R.id.numberHolder);
         number.setText("70");
     }
 
@@ -239,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
         startActivity(discoverableIntent);
 
-        IntentFilter intentFilter = new IntentFilter(mBluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+        IntentFilter intentFilter = new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
         registerReceiver(mBroadcastReceiver2,intentFilter);
 
     }
@@ -284,8 +290,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             // When discovery finds a device
-            if (action.equals(mBluetoothAdapter.ACTION_STATE_CHANGED)) {
-                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, mBluetoothAdapter.ERROR);
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
 
                 switch(state){
                     case BluetoothAdapter.STATE_OFF:
