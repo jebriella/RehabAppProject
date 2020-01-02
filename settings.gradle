@@ -1,2 +1,2 @@
-include ':app', ':MPChartLib'
+include ':app', ':MPChartLib', ':MPChartExample'
 rootProject.name='RehabAppProject'
