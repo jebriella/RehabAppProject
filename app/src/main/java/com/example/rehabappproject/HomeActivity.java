@@ -209,8 +209,6 @@ public class HomeActivity extends AppCompatActivity {
 
         BarData data = new BarData(bardataset);
         barChart.setData(data); // set the data and list of dayNameList into chart
-        //barChart.setFitBars(true);
-        //barChart.setDescription("");  // set the description
 
         // STYLING
 
@@ -226,10 +224,8 @@ public class HomeActivity extends AppCompatActivity {
         //axises
         barChart.getAxisRight().setDrawAxisLine(false);
         barChart.getXAxis().setDrawAxisLine(false);
-        //  barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);  //move x dayNameList below
         barChart.getAxisRight().setDrawLabels(false);
         barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
-
 
         //grid lines
         barChart.getAxisRight().setDrawGridLines(false);
@@ -251,10 +247,7 @@ public class HomeActivity extends AppCompatActivity {
         barChart.animateY(1000);
 
         return barChart;
-
     }
-
-
 }
 
 class myCSVReader {
