@@ -60,7 +60,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private Button weekButton;
     private Button monthButton;
-    private Button yearButton;
 
     private ImageView userImage;
     private TextView userWelcomeText;
@@ -119,7 +118,6 @@ public class HomeActivity extends AppCompatActivity {
 
         weekButton = findViewById(R.id.weekButton);
         monthButton = findViewById(R.id.monthButton);
-        yearButton = findViewById(R.id.yearButton);
     }
 
     public void lastSessionClicked (View view){
@@ -186,13 +184,6 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void yearClick(View view) {
-        plotYearBarChart(barEntries, dayNameList, goal);
-    }
-
-    private void plotYearBarChart(ArrayList entries, ArrayList labels, float goal) {
-        //TODO Plot year
-    }
 
     private void plotIndicatorLine(float goal, BarChart barChart) {
         String goalString = Float.toString(goal);
