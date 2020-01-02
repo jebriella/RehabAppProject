@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.example.rehabappproject"
         minSdkVersion 26
-        targetSdkVersion 26
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -36,10 +36,10 @@ dependencies {
 
     // Charts
     //Has been implemented as a module
+    implementation project(path: ':MPChartLib')
 
     //openCSV
     implementation 'com.opencsv:opencsv:4.0'
-    implementation project(path: ':MPChartLib')
 
     //picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'

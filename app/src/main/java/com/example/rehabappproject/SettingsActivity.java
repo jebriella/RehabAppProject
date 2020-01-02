@@ -1,5 +1,6 @@
 package com.example.rehabappproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -26,9 +27,14 @@ public class SettingsActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
                         // user is now signed out
-                        finish();
+                        finishAndRemoveTask();
                     }
                 });
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        super.onBackPressed();
+    }
 }
