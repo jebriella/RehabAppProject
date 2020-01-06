@@ -20,6 +20,13 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
 /**
+ * This code was taken from 2013 The Android Open Source Project, from the Project: Android-BLE-to-Arduino.
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * Some adaptions to fit our use have been done.
+ * https://www.programcreek.com/java-api-examples/?code=richhowley%2FAndroid-BLE-to-Arduino%2FAndroid-BLE-to-Arduino-master
+ */
+
+/**
  * Service for managing connection and data communication with a GATT server hosted on a
  * given Bluetooth LE device.
  */

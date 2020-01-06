@@ -2,6 +2,12 @@ package com.example.rehabappproject;
 
 import java.util.HashMap;
 /**
+ * This code was taken from 2013 The Android Open Source Project, from the Project: Android-BLE-to-Arduino.
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * Some adaptions to fit our use have been done.
+ * https://www.programcreek.com/java-api-examples/?code=richhowley%2FAndroid-BLE-to-Arduino%2FAndroid-BLE-to-Arduino-master
+ */
+/**
  * This class includes a small subset of standard GATT attributes for demonstration purposes.
  */
 public class SampleGattAttributes {

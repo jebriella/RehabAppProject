@@ -24,6 +24,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.UUID;
 /**
+ * This code was taken from 2013 The Android Open Source Project, from the Project: Android-BLE-to-Arduino.
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * Some adaptions to fit our use have been done.
+ * https://www.programcreek.com/java-api-examples/?code=richhowley%2FAndroid-BLE-to-Arduino%2FAndroid-BLE-to-Arduino-master
+ */
+/**
  * Activity for scanning and displaying available Bluetooth LE devices.
  */
 public class DeviceScanActivity extends ListActivity {
