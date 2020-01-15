@@ -4,28 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.hotspot2.pps.HomeSp;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.firebase.ui.auth.IdpResponse;
-import com.firebase.ui.auth.data.model.User;
-import com.google.firebase.auth.FirebaseAuth;
 import com.firebase.ui.auth.AuthUI;
-
-import com.google.firebase.auth.UserInfo;
-
+import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -58,9 +49,9 @@ protected void onCreate(Bundle savedInstanceState){
 
 
 
-    //not connected to internet
+    //tells the user if not connected to internet
     if (!isNetworkAvailable()) {
-        Toast toast= Toast.makeText(getApplicationContext(), "Connect to the internet to login", Toast.LENGTH_LONG);
+        Toast toast= Toast.makeText(getApplicationContext(), "Connect to the internet before logging in", Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP,0,50);
         toast.show();
     }

@@ -2,51 +2,32 @@ package com.example.rehabappproject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.opencsv.CSVReader;
 
 import java.io.BufferedReader;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.opencsv.CSVReader;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private final float week = 7f;
@@ -56,14 +37,6 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<BarEntry> barEntries;
     private ArrayList<String> dayNameList;
     private ArrayList<String> dateNameList;
-
-
-    private Button weekButton;
-    private Button monthButton;
-
-    private ImageView userImage;
-    private TextView userWelcomeText;
-
 
     private final Context context = GlobalApplication.getAppContext();
     private long timeOfLastBackPressed = 0;
@@ -82,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
 
         testBar();
 
+        //Update status bar with name and user picture
         StatusBarHandler statusBarHandler = new StatusBarHandler((ImageView) findViewById(R.id.userImg),
                 (TextView) findViewById(R.id.welcomeText), true); //TODO It would be good if this could be stored somehow and used w/o creating a new one on every activity
     }
@@ -115,16 +89,13 @@ public class HomeActivity extends AppCompatActivity {
 
         //Populate bar chart
         plotWeekBarChart(barEntries, dayNameList, goal);
-
-        weekButton = findViewById(R.id.weekButton);
-        monthButton = findViewById(R.id.monthButton);
     }
 
     public void lastSessionClicked (View view){
         startActivity(new Intent(getApplicationContext(), LastSessionActivity.class));
     }
     public void trackExerciseClicked (View view){
-
+        //nothing here yet
     }
 
     public void connectClicked(View view) {
@@ -151,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        switch (item.getItemId()) { //If could be used here, but uses switch to prepare for more alternatives
             case R.id.settings:
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 finish();
@@ -200,7 +171,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private BarChart plotBarChart(ArrayList<BarEntry> entries, ArrayList labels, float goal, float noDays) {
+    private BarChart plotBarChart(ArrayList<BarEntry> entries, ArrayList<String> labels, float goal, float noDays) {
 
         BarChart barChart = findViewById(R.id.barchart);
         barChart.clear();
@@ -260,7 +231,7 @@ class myCSVReader {
         this.context = context;
     }
 
-    public ArrayList<Double> readTxt() {
+    ArrayList<Double> readTxt() {
 
         InputStreamReader is = null;
         try {

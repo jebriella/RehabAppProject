@@ -3,11 +3,9 @@ package com.example.rehabappproject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -30,10 +28,13 @@ public class StatusBarHandler extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         //handle user image
-        handleImage(user);
+        if (user != null) {
+            handleImage(user);
+        }
+
 
         //handle text in status bar
-        if (showUserText==true) {
+        if (showUserText) {
         textView.setText(new StringBuilder().append("Welcome back, ").append(user.getDisplayName()).append("!").toString());
         } else {
             textView.setText("");

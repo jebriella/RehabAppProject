@@ -39,7 +39,7 @@ public class LastSessionActivity extends AppCompatActivity {
         myCSVReader txtReader = new myCSVReader("angle_example_data.csv" ,context );
         ArrayList<Double> angleData = txtReader.readTxt();
 
-        //generate 50hz timestamp AL to go with the above
+        //generate 50hz timestamp arraylist to go with the above
         ArrayList<Float> angleDataTimeStamp = new ArrayList<>();
         float t =0.0f;
         for (int i=0; i<angleData.size()/50+1 ;i++) {
@@ -110,11 +110,6 @@ public class LastSessionActivity extends AppCompatActivity {
         scatterChart.setPinchZoom(false);
 
         // viewport
-        //barChart.resetViewPortOffsets();
-        //barChart.resetTracking();
-        //barChart.restoreDefaultFocus();
-        //barChart.setVisibleXRange(noDays,noDays);
-        //barChart.moveViewToX(60); //move focus to the right
         scatterChart.invalidate();
 
         scatterChart.animateY(1000);

@@ -1,4 +1,5 @@
 package com.example.rehabappproject;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.ListActivity;
@@ -11,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +21,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
-import java.util.UUID;
 /**
  * This code was taken from 2013 The Android Open Source Project, from the Project: Android-BLE-to-Arduino.
  * Licensed under the Apache License, Version 2.0 (the "License")
