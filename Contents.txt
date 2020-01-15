@@ -1,0 +1,3 @@
+This repository contains:
+- MATLAB code for angle detection, stored in the directory "matlab_files"
+- A user interface for an Android app, stored in the remaining folders
